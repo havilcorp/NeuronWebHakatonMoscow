@@ -1,6 +1,5 @@
 package com.mvp.myapplication.data.models
 
-import android.graphics.Color
 import android.graphics.Rect
 
 data class ModelRect(

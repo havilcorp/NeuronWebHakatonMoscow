@@ -6,4 +6,5 @@ import io.reactivex.disposables.Disposable
 interface IDataManager {
 
     fun getObjects(imageBase64: String, handler: IAppCallback<Requests.OBJECT_LOCALIZATION>): Disposable
+    fun getDetailObjects(imageBase64: String, handler: IAppCallback<Requests.OBJECT_DETECTION>): Disposable
 }

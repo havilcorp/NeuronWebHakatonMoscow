@@ -15,8 +15,23 @@ import javax.inject.Singleton
 
     override fun getObjects(imageBase64: String, handler: IAppCallback<Requests.OBJECT_LOCALIZATION>): Disposable {
         return dataBaseNetworkHelper.getObjects(imageBase64).subscribe(
-                { handler.onSuccess(Gson().fromJson(it.body()!!.string(), Requests.OBJECT_LOCALIZATION::class.java)) },
+                { it.body()?.let { body -> handler.onSuccess(Gson().fromJson(body.string(), Requests.OBJECT_LOCALIZATION::class.java)) } },
                 { handler.onFailure(it.message, it) }
+        )
+    }
+
+    override fun getDetailObjects(
+        imageBase64: String,
+        handler: IAppCallback<Requests.OBJECT_DETECTION>
+    ): Disposable {
+        return dataBaseNetworkHelper.getDetailObjects(imageBase64).subscribe(
+            {
+                it.body()?.let { body ->
+                    //Log.d("TAG", body.string())
+                    handler.onSuccess(Gson().fromJson(body.string(), Requests.OBJECT_DETECTION::class.java))
+                }
+            },
+            { handler.onFailure(it.message, it) }
         )
     }
 

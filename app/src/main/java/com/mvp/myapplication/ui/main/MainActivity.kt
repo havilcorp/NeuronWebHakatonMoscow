@@ -1,22 +1,18 @@
 package com.mvp.myapplication.ui.main
 
-import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.*
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ArrayAdapter
 import butterknife.ButterKnife
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
 import com.mvp.myapplication.App
 import com.mvp.myapplication.R
 import com.mvp.myapplication.base.BaseActivity
 import com.mvp.myapplication.data.models.ModelRect
+import com.mvp.myapplication.data.models.adapter.ModelItemString
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -27,7 +23,8 @@ class MainActivity : BaseActivity(), MainContract.IView {
         App[this].component.inject(this)
     }
 
-    @Inject lateinit var presenter: MainPresenter
+    @Inject
+    lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,23 +52,11 @@ class MainActivity : BaseActivity(), MainContract.IView {
 
         imageView.setOnTouchListener { v, event ->
             if(event.action == MotionEvent.ACTION_DOWN) {
-                presenter.actionImage(event.x, event.y)
+                presenter.actionPointImage(event.x, event.y)
             }
             false
         }
 
-        Dexter.withActivity(this)
-            .withPermission(Manifest.permission.CAMERA)
-            .withListener(object : PermissionListener {
-                override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                    presenter.successCamPermission()
-                }
-                override fun onPermissionDenied(response: PermissionDeniedResponse) {}
-                override fun onPermissionRationaleShouldBeShown(
-                    permission: PermissionRequest?,
-                    token: PermissionToken?
-                ) {}
-            }).check()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -113,6 +98,24 @@ class MainActivity : BaseActivity(), MainContract.IView {
                 rectRadius, rectRadius, paint)
         }
         imageView.setImageBitmap(bitmap)
+    }
+
+    override fun showViewSelectObject(listItem: ArrayList<ModelItemString>) {
+
+        val arrayAdapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_item)
+        listItem.forEach {
+            arrayAdapter.add(it.name)
+        }
+
+        AlertDialog.Builder(this)
+            .setIcon(R.mipmap.ic_launcher)
+            .setTitle("Выберите один")
+            .setNegativeButton("Отмена") { dialog, which -> dialog.dismiss() }
+            .setAdapter(arrayAdapter) { dialog, index ->
+                presenter.actionObjectItem(listItem[index].i)
+                dialog.dismiss()
+            }
+            .show()
     }
 
 }

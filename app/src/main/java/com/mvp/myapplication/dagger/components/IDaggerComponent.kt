@@ -7,6 +7,7 @@ import com.mvp.myapplication.dagger.moduls.FirebaseModule
 import com.mvp.myapplication.data.DataManager
 import com.mvp.myapplication.data.local.DataBaseLocalHelper
 import com.mvp.myapplication.data.network.DataBaseNetworkHelper
+import com.mvp.myapplication.ui.logo.LogoActivity
 import com.mvp.myapplication.ui.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -16,6 +17,7 @@ import javax.inject.Singleton
 interface IDaggerComponent {
 
     fun inject(app: App)
+    fun inject(activity: LogoActivity)
     fun inject(activity: MainActivity)
 
     var dataManager : DataManager
