@@ -4,11 +4,10 @@ import android.Manifest
 import android.os.Bundle
 import butterknife.ButterKnife
 import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.single.PermissionListener
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.mvp.myapplication.App
 import com.mvp.myapplication.R
 import com.mvp.myapplication.base.BaseActivity
@@ -40,16 +39,23 @@ class LogoActivity : BaseActivity(), LogoContract.IView {
 
     override fun checkPermission() {
         Dexter.withActivity(this)
-            .withPermission(Manifest.permission.CAMERA)
-            .withListener(object : PermissionListener {
-                override fun onPermissionGranted(response: PermissionGrantedResponse) {
-                    presenter.successCamPermission()
+            .withPermissions(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                    if(report.grantedPermissionResponses.size == 2) {
+                        presenter.successCamPermission()
+                    } else {
+                        checkPermission()
+                    }
                 }
-                override fun onPermissionDenied(response: PermissionDeniedResponse) {}
                 override fun onPermissionRationaleShouldBeShown(
-                    permission: PermissionRequest?,
-                    token: PermissionToken?
-                ) {}
+                    permissions: List<PermissionRequest>,
+                    token: PermissionToken
+                ) {
+                    checkPermission()
+                }
             }).check()
     }
 

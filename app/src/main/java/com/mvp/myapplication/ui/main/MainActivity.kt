@@ -3,7 +3,10 @@ package com.mvp.myapplication.ui.main
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.ArrayAdapter
@@ -13,7 +16,9 @@ import com.mvp.myapplication.R
 import com.mvp.myapplication.base.BaseActivity
 import com.mvp.myapplication.data.models.ModelRect
 import com.mvp.myapplication.data.models.adapter.ModelItemString
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 import javax.inject.Inject
 
 
@@ -43,7 +48,7 @@ class MainActivity : BaseActivity(), MainContract.IView {
         presenter.setScreenSize(size.x, size.y)
 
         findViewById<View>(R.id.actionCam).setOnClickListener {
-            presenter.actionCreatePhoto()
+            presenter.actionCreatePhoto(this)
         }
 
         findViewById<View>(R.id.actionGalery).setOnClickListener {
@@ -66,6 +71,14 @@ class MainActivity : BaseActivity(), MainContract.IView {
 
     override fun setImage(bitmap: Bitmap) {
         imageView.setImageBitmap(bitmap)
+    }
+
+    override fun setImageUri(uri: Uri) {
+        imageView.setImageURI(uri)
+    }
+
+    override fun setPicassoImage(uri: Uri) {
+        Picasso.get().load(uri).into(imageView)
     }
 
     override fun drawRects(image: Bitmap, objects: ArrayList<ModelRect>, strokeWidth: Float, textSize: Float, textMargin: Float, rectRadius: Float) {
