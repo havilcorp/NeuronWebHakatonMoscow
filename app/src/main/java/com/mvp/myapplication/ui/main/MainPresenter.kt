@@ -25,6 +25,7 @@ import com.mvp.myapplication.data.models.adapter.ModelItemString
 import com.mvp.myapplication.data.models.api.Requests
 import com.mvp.myapplication.utils.ImageUtils
 import com.mvp.myapplication.utils.InternetUtils
+import com.mvp.myapplication.utils.LangList
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.text.SimpleDateFormat
@@ -46,13 +47,15 @@ import kotlin.collections.ArrayList
     var screenSizeY = 0f
     var koeffX = 0f
     var koeffY = 0f
+    var widthImage = 0
+    var heightImage = 0
 
     val textSize = 100f
     val textMargin = 50f
     val strokeWidth = 20f
     val rectRadius = 20f
 
-    lateinit var selectImage: Bitmap
+    var selectImage: Bitmap? = null
 
     val CAMERA_ACTION_GALERY = 1
     val CAMERA_ACTION_PHOTO = 2
@@ -84,6 +87,24 @@ import kotlin.collections.ArrayList
         iMvpView?.startActivityFResult(intent, CAMERA_ACTION_PHOTO)
     }
 
+    override fun actionPhoto() {
+        /*iMvpView?.hidePanel()*/
+    }
+
+    override fun actionSurfacePhoto() {
+        /*iMvpView?.takePhoto()*/
+    }
+
+    override fun loadedPhoto(uri: Uri, contentResolver: ContentResolver) {
+        /*iMvpView?.hideSurfaceView()
+        iMvpView?.hideSurfaceCamera()
+        iMvpView?.setImageUri(uri)
+        Handler().postDelayed({
+            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+            sendImageToApiAndGetObjects(imageBitmap)
+        }, 500)*/
+    }
+
     override fun onResultActivity(requestCode: Int, resultCode: Int, data: Intent?, contentResolver: ContentResolver) {
         if(resultCode == Activity.RESULT_OK && requestCode == CAMERA_ACTION_PHOTO) {
 
@@ -91,6 +112,8 @@ import kotlin.collections.ArrayList
             val imageStream = contentResolver.openInputStream(imageUri!!)
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
 
+            iMvpView?.hidePanel()
+            iMvpView?.hideSurfaceView()
             iMvpView?.setImageUri(imageUri)
 
             Handler().postDelayed({
@@ -103,6 +126,8 @@ import kotlin.collections.ArrayList
             val imageStream = contentResolver.openInputStream(imageUri!!)
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
 
+            iMvpView?.hidePanel()
+            iMvpView?.hideSurfaceView()
             iMvpView?.setImage(imageBitmap)
 
             Handler().postDelayed({
@@ -112,9 +137,20 @@ import kotlin.collections.ArrayList
         }
     }
 
+    override fun actionBack() {
+        iMvpView?.hideActionBack()
+        iMvpView?.showPanel()
+        iMvpView?.showSurfaceView()
+    }
+
     override fun setScreenSize(x: Int, y: Int) {
         screenSizeX = x.toFloat()
         screenSizeY = y.toFloat()
+    }
+
+    override fun setNewSizeImage(width: Int, height: Int) {
+        widthImage = width
+        heightImage = height
     }
 
     private fun sendImageToApiAndGetObjects(image: Bitmap) {
@@ -128,21 +164,25 @@ import kotlin.collections.ArrayList
         dataManager.getObjects(ImageUtils.encodeImageToBase64(image), object : IAppCallback<Requests.OBJECT_LOCALIZATION> {
             override fun onSuccess(response: Requests.OBJECT_LOCALIZATION) {
                 iMvpView?.hideProgress()
+                iMvpView?.showActionBack()
                 listRects.clear()
+                val langList = LangList()
                 response.responses.forEach {
                     it.localizedObjectAnnotations.forEach {
-                        listRects.add(
-                            ModelRect(
-                                it.name,
-                                Rect(
-                                    (it.boundingPoly.normalizedVertices[0].x * image.width).toInt(),
-                                    (it.boundingPoly.normalizedVertices[1].y * image.height).toInt(),
-                                    (it.boundingPoly.normalizedVertices[2].x * image.width).toInt(),
-                                    (it.boundingPoly.normalizedVertices[3].y * image.height).toInt()
-                                ),
-                                Color.rgb(150, 230, 255)
+                        //if(langList.isset(it.name)) {
+                            listRects.add(
+                                ModelRect(
+                                    langList.getRus(it.name),
+                                    Rect(
+                                        (it.boundingPoly.normalizedVertices[0].x * image.width).toInt(),
+                                        (it.boundingPoly.normalizedVertices[1].y * image.height).toInt(),
+                                        (it.boundingPoly.normalizedVertices[2].x * image.width).toInt(),
+                                        (it.boundingPoly.normalizedVertices[3].y * image.height).toInt()
+                                    ),
+                                    Color.rgb(150, 230, 255)
+                                )
                             )
-                        )
+                        //}
                     }
                 }
                 iMvpView?.drawRects(image, listRects, strokeWidth, textSize, textMargin, rectRadius)
@@ -151,44 +191,67 @@ import kotlin.collections.ArrayList
     }
 
     override fun actionPointImage(x: Float, y: Float) {
-        val items = ArrayList<ModelItemString>()
-        val newX = x / koeffX
-        val newY = y / koeffY
-        //Log.d("TAG", "koeffX $koeffX koeffY $koeffY x = $newX y = $newY")
-        listRects.forEach { it.color = Color.rgb(150, 255, 255) }
-        listRects.forEachIndexed { index, it ->
-            if(it.rect.contains(newX.toInt(), newY.toInt())) {
-                it.color = Color.rgb(0, 255, 0)
-                items.add(ModelItemString(index, it.title))
+
+        selectImage?.let { selectImage ->
+
+            val items = ArrayList<ModelItemString>()
+            val newX = x / koeffX
+            val newY = y / koeffY
+
+            //Log.d("TAG", "screenSizeY ${screenSizeY} heightImage ${heightImage}")
+            //Log.d("TAG", "koeffY ${koeffY}")
+            //Log.d("TAG", "y ${y}")
+            //Log.d("TAG", "newY ${newY}")
+
+            listRects.forEach { it.color = Color.rgb(150, 255, 255) }
+            listRects.forEachIndexed { index, it ->
+                if (it.rect.contains(newX.toInt(), newY.toInt())) {
+                    it.color = Color.rgb(0, 255, 0)
+                    items.add(ModelItemString(index, it.title))
+                }
             }
+            iMvpView?.drawRects(
+                selectImage,
+                listRects,
+                strokeWidth,
+                textSize,
+                textMargin,
+                rectRadius
+            )
+            iMvpView?.showViewSelectObject(items)
+
         }
-        iMvpView?.drawRects(selectImage, listRects, strokeWidth, textSize, textMargin, rectRadius)
-        iMvpView?.showViewSelectObject(items)
     }
 
     override fun actionObjectItem(item: Int) {
+        selectImage?.let { selectImage ->
+            val image = Bitmap.createBitmap(
+                selectImage,
+                listRects[item].rect.left,
+                listRects[item].rect.top,
+                listRects[item].rect.right - listRects[item].rect.left,
+                listRects[item].rect.bottom - listRects[item].rect.top
+            )
 
-        val image = Bitmap.createBitmap(
-            selectImage,
-            listRects[item].rect.left,
-            listRects[item].rect.top,
-            listRects[item].rect.right - listRects[item].rect.left,
-            listRects[item].rect.bottom - listRects[item].rect.top
-        )
-
-        iMvpView?.showProgress()
-        dataManager.getDetailObjects(ImageUtils.encodeImageToBase64(image), object : IAppCallback<Requests.OBJECT_DETECTION> {
-            override fun onSuccess(response: Requests.OBJECT_DETECTION) {
-                iMvpView?.hideProgress()
-                val items = ArrayList<ModelItemString>()
-                response.responses.forEach {
-                    it.labelAnnotations.forEach {
-                        items.add(ModelItemString(0, it.description))
+            iMvpView?.hideActionBack()
+            iMvpView?.showProgress()
+            dataManager.getDetailObjects(ImageUtils.encodeImageToBase64(image), object : IAppCallback<Requests.OBJECT_DETECTION> {
+                override fun onSuccess(response: Requests.OBJECT_DETECTION) {
+                    iMvpView?.hideProgress()
+                    iMvpView?.showActionBack()
+                    val langList = LangList()
+                    val items = ArrayList<ModelItemString>()
+                    response.responses.forEach {
+                        it.labelAnnotations.forEach {
+                            //if(langList.isset(it.description)) {
+                            items.add(ModelItemString(0, langList.getRus(it.description)))
+                            //}
+                        }
                     }
+                    if(items.size != 0) iMvpView?.showViewSelectObject(items)
                 }
-                iMvpView?.showViewSelectObject(items)
-            }
-        })
+            })
+        }
     }
 
 }

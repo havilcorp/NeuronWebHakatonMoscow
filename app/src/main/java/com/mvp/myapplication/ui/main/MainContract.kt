@@ -22,6 +22,20 @@ class MainContract {
 
         fun showViewSelectObject(listItem: ArrayList<ModelItemString>)
 
+        fun hidePanel()
+        fun showPanel()
+
+        fun hideSurfaceCamera()
+        fun showSurfaceCamera()
+
+        fun showSurfaceView()
+        fun hideSurfaceView()
+
+        fun showActionBack()
+        fun hideActionBack()
+
+        fun takePhoto()
+
     }
 
     interface IPresenter {
@@ -30,13 +44,19 @@ class MainContract {
         fun onResultActivity(requestCode: Int, resultCode: Int, data: Intent?, contentResolver: ContentResolver)
 
         fun setScreenSize(x: Int, y: Int)
+        fun setNewSizeImage(width: Int, height: Int)
 
         fun actionGalery()
+        fun actionPhoto()
+        fun actionSurfacePhoto()
+        fun loadedPhoto(uri: Uri, contentResolver: ContentResolver)
         fun actionCreatePhoto(context: Context)
 
         fun actionPointImage(x: Float, y: Float)
 
         fun actionObjectItem(item: Int)
+
+        fun actionBack()
 
     }
 
