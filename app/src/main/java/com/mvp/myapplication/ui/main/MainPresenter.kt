@@ -103,7 +103,7 @@ import kotlin.collections.ArrayList
     override fun setBitmap(bitmap: Bitmap) {
         iMvpView?.hideSurfaceView()
         iMvpView?.hideActionPhoto()
-        val imageBitmap = ImageUtils.getResizedBitmap(bitmap, screenSizeX.toInt(), bitmap.width * 9 / 16)!!
+        val imageBitmap = ImageUtils.getResizedBitmap(bitmap, screenSizeX.toInt(), (screenSizeX / bitmap.width.toFloat() * bitmap.height.toFloat()).toInt())!!
         iMvpView?.setImage(imageBitmap)
         Handler().postDelayed({
             sendImageToApiAndGetObjects(imageBitmap)
@@ -132,9 +132,7 @@ import kotlin.collections.ArrayList
             val imageStream = contentResolver.openInputStream(imageUri!!)
             var imageBitmap = BitmapFactory.decodeStream(imageStream)
 
-            //Log.d("TAG", "screenSizeX $screenSizeX |${screenSizeX.toInt()} / ${imageBitmap.width.toInt()} * ${imageBitmap.height.toInt()}| (${screenSizeX.toInt() / imageBitmap.width.toInt() * imageBitmap.height.toInt()})")
-
-            imageBitmap = ImageUtils.getResizedBitmap(imageBitmap, screenSizeX.toInt(), imageBitmap.width * 9 / 16)
+            imageBitmap = ImageUtils.getResizedBitmap(imageBitmap, screenSizeX.toInt(), (screenSizeX / imageBitmap.width.toFloat() * imageBitmap.height.toFloat()).toInt())
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
