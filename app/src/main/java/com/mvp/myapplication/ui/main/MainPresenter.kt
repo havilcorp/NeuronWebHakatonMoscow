@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -14,7 +13,6 @@ import android.net.Uri
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.content.FileProvider
 import com.mvp.myapplication.BuildConfig
 import com.mvp.myapplication.base.BasePresenter
@@ -23,6 +21,7 @@ import com.mvp.myapplication.data.IAppCallback
 import com.mvp.myapplication.data.models.ModelRect
 import com.mvp.myapplication.data.models.adapter.ModelItemString
 import com.mvp.myapplication.data.models.api.Requests
+import com.mvp.myapplication.utils.AttrList
 import com.mvp.myapplication.utils.ImageUtils
 import com.mvp.myapplication.utils.InternetUtils
 import com.mvp.myapplication.utils.LangList
@@ -239,12 +238,12 @@ import kotlin.collections.ArrayList
                 override fun onSuccess(response: Requests.OBJECT_DETECTION) {
                     iMvpView?.hideProgress()
                     iMvpView?.showActionBack()
-                    val langList = LangList()
+                    val attrList = AttrList()
                     val items = ArrayList<ModelItemString>()
                     response.responses.forEach {
                         it.labelAnnotations.forEach {
                             //if(langList.isset(it.description)) {
-                            items.add(ModelItemString(0, langList.getRus(it.description)))
+                            items.add(ModelItemString(0, attrList.getRus(it.description)))
                             //}
                         }
                     }

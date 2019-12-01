@@ -5,7 +5,9 @@ import android.content.Intent
 import android.graphics.*
 import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.MotionEvent
+import android.view.SurfaceHolder
+import android.view.View
 import android.widget.ArrayAdapter
 import butterknife.ButterKnife
 import com.mvp.myapplication.App
@@ -14,7 +16,6 @@ import com.mvp.myapplication.base.BaseActivity
 import com.mvp.myapplication.data.models.ModelRect
 import com.mvp.myapplication.data.models.adapter.ModelItemString
 import com.squareup.picasso.Picasso
-import io.alterac.blurkit.BlurKit
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -35,7 +36,6 @@ class MainActivity : BaseActivity(), MainContract.IView {
         setContentView(R.layout.activity_main)
 
         ButterKnife.bind(this)
-        //BlurKit.init(this)
 
         presenter.attachView(this)
         presenter.initializeView()
@@ -95,16 +95,6 @@ class MainActivity : BaseActivity(), MainContract.IView {
         //    .async()
         //    .onto(findViewById<View>(R.id.blureView) as ViewGroup)
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-        blurLayout.startBlur()
-    }
-
-    override fun onStop() {
-        blurLayout.pauseBlur();
-        super.onStop()
     }
 
     override fun onPause() {
@@ -189,7 +179,7 @@ class MainActivity : BaseActivity(), MainContract.IView {
     override fun setImageUri(uri: Uri) {
         imageView.setImageURI(uri)
         presenter.setNewSizeImage(imageView.width, imageView.height)
-        //imageView.animate().rotation(90F)
+        imageView.animate().rotation(90F)
     }
 
     override fun setPicassoImage(uri: Uri) {

@@ -15,23 +15,14 @@
         android:id="@+id/actionBack"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:visibility="gone"
-        android:text="back"/>
+        android:text="Назад"/>
 
     <SurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"/>
-
-    <io.alterac.blurkit.BlurLayout
-        android:id="@+id/blurLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </io.alterac.blurkit.BlurLayout>
 
     <ImageView
         android:id="@+id/actionSurfacePhoto"
@@ -45,7 +36,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/shape_background_surface_camera"/>
-
 
     <RelativeLayout
         android:id="@+id/blureView"
