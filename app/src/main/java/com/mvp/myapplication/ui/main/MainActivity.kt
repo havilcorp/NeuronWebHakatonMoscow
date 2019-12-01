@@ -168,8 +168,8 @@ class MainActivity : BaseActivity(), MainContract.IView {
 
     override fun drawRects(image: Bitmap, objects: ArrayList<ModelRect>, strokeWidth: Float, textSize: Float, textMargin: Float, rectRadius: Float) {
         val bitmap = Bitmap.createBitmap(
-            size.x,
-            size.x / image.width * image.height,
+            image.width,
+            image.height,
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
@@ -185,8 +185,8 @@ class MainActivity : BaseActivity(), MainContract.IView {
         canvas.drawColor(Color.LTGRAY)
         //image.width = bitmap.width + 1
         //image.height = bitmap.height
-        canvas.drawBitmap(image, Rect(0, 0, image.width-1, image.height-1), Rect(0, 0, size.x-1, size.y-1),null)
-        //canvas.drawBitmap(image, 0f, 0f, null)
+        //canvas.drawBitmap(image, Rect(0, 0, image.width-1, image.height-1), Rect(0, 0, size.x-1, size.y-1),null)
+        canvas.drawBitmap(image, 0f, 0f, null)
         objects.forEach {
             paint.color = it.color
             paintText.color = it.color

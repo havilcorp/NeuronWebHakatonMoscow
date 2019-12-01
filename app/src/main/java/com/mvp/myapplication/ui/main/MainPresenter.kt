@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.FileProvider
 import com.mvp.myapplication.BuildConfig
 import com.mvp.myapplication.base.BasePresenter
@@ -52,10 +53,10 @@ import kotlin.collections.ArrayList
     var widthImage = 0
     var heightImage = 0
 
-    val textSize = 100f
-    val textMargin = 50f
-    val strokeWidth = 20f
-    val rectRadius = 20f
+    val textSize = 30f
+    val textMargin = 20f
+    val strokeWidth = 5f
+    val rectRadius = 10f
 
     var selectImage: Bitmap? = null
 
@@ -102,9 +103,10 @@ import kotlin.collections.ArrayList
     override fun setBitmap(bitmap: Bitmap) {
         iMvpView?.hideSurfaceView()
         iMvpView?.hideActionPhoto()
-        iMvpView?.setImage(bitmap)
+        val imageBitmap = ImageUtils.getResizedBitmap(bitmap, screenSizeX.toInt(), bitmap.width * 9 / 16)!!
+        iMvpView?.setImage(imageBitmap)
         Handler().postDelayed({
-            sendImageToApiAndGetObjects(bitmap)
+            sendImageToApiAndGetObjects(imageBitmap)
         }, 500)
     }
 
@@ -113,7 +115,7 @@ import kotlin.collections.ArrayList
 
             val imageUri = Uri.parse(cameraFilePath)
             val imageStream = contentResolver.openInputStream(imageUri!!)
-            val imageBitmap = BitmapFactory.decodeStream(imageStream)
+            var imageBitmap = BitmapFactory.decodeStream(imageStream)
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
@@ -128,7 +130,11 @@ import kotlin.collections.ArrayList
         if(resultCode == Activity.RESULT_OK && requestCode == CAMERA_ACTION_GALERY && data != null){
             val imageUri = data.data
             val imageStream = contentResolver.openInputStream(imageUri!!)
-            val imageBitmap = BitmapFactory.decodeStream(imageStream)
+            var imageBitmap = BitmapFactory.decodeStream(imageStream)
+
+            //Log.d("TAG", "screenSizeX $screenSizeX |${screenSizeX.toInt()} / ${imageBitmap.width.toInt()} * ${imageBitmap.height.toInt()}| (${screenSizeX.toInt() / imageBitmap.width.toInt() * imageBitmap.height.toInt()})")
+
+            imageBitmap = ImageUtils.getResizedBitmap(imageBitmap, screenSizeX.toInt(), imageBitmap.width * 9 / 16)
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
