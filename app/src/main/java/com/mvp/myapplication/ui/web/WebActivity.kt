@@ -1,16 +1,11 @@
 package com.mvp.myapplication.ui.web
 
-import android.Manifest
 import android.os.Bundle
 import butterknife.ButterKnife
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.mvp.myapplication.App
 import com.mvp.myapplication.R
 import com.mvp.myapplication.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_web.*
 import javax.inject.Inject
 
 
@@ -34,6 +29,10 @@ class WebActivity : BaseActivity(), WebContract.IView {
     }
 
     override fun initializeView() {
+
+        val query = intent.getStringExtra("query")
+
+        webView.loadUrl("https://www.lamoda.ru/catalogsearch/result/?q=$query")
 
     }
 

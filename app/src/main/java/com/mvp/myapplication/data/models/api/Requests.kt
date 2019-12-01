@@ -52,13 +52,29 @@ class Requests {
         val responses: List<OBJECT_DETECTION_Responses>
     )
     data class OBJECT_DETECTION_Responses (
-        val labelAnnotations: List<OBJECT_DETECTION_Responses_LabelAnnotations>
+        val labelAnnotations: List<OBJECT_DETECTION_Responses_LabelAnnotations>,
+        val imagePropertiesAnnotation: OBJECT_DETECTION_Responses_ImagePropertiesAnnotation
     )
     data class OBJECT_DETECTION_Responses_LabelAnnotations (
         val mid: String,
         val description: String,
         val score: Float,
         val topicality: Float
+    )
+    data class OBJECT_DETECTION_Responses_ImagePropertiesAnnotation(
+        val dominantColors: OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors
+    )
+    data class OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors(
+        val colors: List<OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors_Colors>
+    )
+    data class OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors_Colors (
+        val color: OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors_Colors_Color,
+        val score: Float
+    )
+    data class OBJECT_DETECTION_Responses_ImagePropertiesAnnotation_DominantColors_Colors_Color (
+        val red: Int,
+        val green: Int,
+        val blue: Int
     )
 
 }

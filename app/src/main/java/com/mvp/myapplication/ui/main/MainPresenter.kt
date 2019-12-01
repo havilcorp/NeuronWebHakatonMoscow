@@ -21,10 +21,8 @@ import com.mvp.myapplication.data.IAppCallback
 import com.mvp.myapplication.data.models.ModelRect
 import com.mvp.myapplication.data.models.adapter.ModelItemString
 import com.mvp.myapplication.data.models.api.Requests
-import com.mvp.myapplication.utils.AttrList
-import com.mvp.myapplication.utils.ImageUtils
-import com.mvp.myapplication.utils.InternetUtils
-import com.mvp.myapplication.utils.LangList
+import com.mvp.myapplication.ui.web.WebActivity
+import com.mvp.myapplication.utils.*
 import io.reactivex.disposables.CompositeDisposable
 import java.io.File
 import java.text.SimpleDateFormat
@@ -93,6 +91,7 @@ import kotlin.collections.ArrayList
     }
 
     override fun actionSurfacePhoto() {
+        iMvpView?.message("Ожидайте")
         iMvpView?.takePhoto()
     }
 
@@ -111,7 +110,7 @@ import kotlin.collections.ArrayList
 
             val imageUri = Uri.parse(cameraFilePath)
             val imageStream = contentResolver.openInputStream(imageUri!!)
-            var imageBitmap = BitmapFactory.decodeStream(imageStream)
+            val imageBitmap = BitmapFactory.decodeStream(imageStream)
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
@@ -247,14 +246,27 @@ import kotlin.collections.ArrayList
                     iMvpView?.showActionBack()
                     val attrList = AttrList()
                     val items = ArrayList<ModelItemString>()
+                    val colors = ArrayList<String>()
                     response.responses.forEach {
+                        it.imagePropertiesAnnotation.dominantColors.colors.forEach {
+                            colors.add(ColorUtils.getColorString(it.color.red, it.color.green, it.color.blue))
+                        }
                         it.labelAnnotations.forEach {
-                            //if(langList.isset(it.description)) {
-                            items.add(ModelItemString(0, attrList.getRus(it.description)))
+                            //if(attrList.isset(it.description)) {
+                                items.add(ModelItemString(0, attrList.getRus(it.description)))
                             //}
                         }
                     }
-                    if(items.size != 0) iMvpView?.showViewSelectObject(items)
+                    if(items.size != 0) {
+                        //iMvpView?.showViewSelectObject(items)
+                        var query = " "
+                        items.forEach {
+                            query += "${colors[0]} ${it.name}%20"
+                        }
+                        val intent = Intent()
+                        intent.putExtra("query", query)
+                        iMvpView?.startActivity(WebActivity::class.java, false, intent)
+                    }
                 }
             })
         }
