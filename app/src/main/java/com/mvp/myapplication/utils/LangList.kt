@@ -58,14 +58,14 @@ class LangList() {
 
     fun getRus(eng: String): String {
         langList.forEach {
-            if(it.eng == eng) return it.rus
+            if(it.eng.toUpperCase() == eng.toUpperCase()) return it.rus
         }
         return eng
     }
 
     fun isset(eng: String): Boolean {
         langList.forEach {
-            if(it.eng == eng) return true
+            if(it.eng.toUpperCase() == eng.toUpperCase()) return true
         }
         return false
     }

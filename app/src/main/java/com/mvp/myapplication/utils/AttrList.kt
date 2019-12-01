@@ -944,14 +944,14 @@ class AttrList() {
 
     fun getRus(eng: String): String {
         attrList.forEach {
-            if(it.eng == eng) return it.rus
+            if(it.eng.toUpperCase() == eng.toUpperCase()) return it.rus
         }
         return eng
     }
 
     fun isset(eng: String): Boolean {
         attrList.forEach {
-            if(it.eng == eng) return true
+            if(it.eng.toUpperCase() == eng.toUpperCase()) return true
         }
         return false
     }
