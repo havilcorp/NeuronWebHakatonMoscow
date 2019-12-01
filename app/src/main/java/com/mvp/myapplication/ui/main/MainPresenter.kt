@@ -1,5 +1,6 @@
 package com.mvp.myapplication.ui.main
 
+import android.R.attr
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentResolver
@@ -9,6 +10,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Rect
+import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import android.os.Handler
@@ -26,6 +28,7 @@ import com.mvp.myapplication.utils.ImageUtils
 import com.mvp.myapplication.utils.InternetUtils
 import com.mvp.myapplication.utils.LangList
 import io.reactivex.disposables.CompositeDisposable
+import java.io.ByteArrayInputStream
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -87,21 +90,22 @@ import kotlin.collections.ArrayList
     }
 
     override fun actionPhoto() {
-        /*iMvpView?.hidePanel()*/
+        iMvpView?.hidePanel()
+        iMvpView?.hideBackView()
+        iMvpView?.showActionPhoto()
     }
 
     override fun actionSurfacePhoto() {
-        /*iMvpView?.takePhoto()*/
+        iMvpView?.takePhoto()
     }
 
-    override fun loadedPhoto(uri: Uri, contentResolver: ContentResolver) {
-        /*iMvpView?.hideSurfaceView()
-        iMvpView?.hideSurfaceCamera()
-        iMvpView?.setImageUri(uri)
+    override fun setBitmap(bitmap: Bitmap) {
+        iMvpView?.hideSurfaceView()
+        iMvpView?.hideActionPhoto()
+        iMvpView?.setImage(bitmap)
         Handler().postDelayed({
-            val imageBitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-            sendImageToApiAndGetObjects(imageBitmap)
-        }, 500)*/
+            sendImageToApiAndGetObjects(bitmap)
+        }, 500)
     }
 
     override fun onResultActivity(requestCode: Int, resultCode: Int, data: Intent?, contentResolver: ContentResolver) {
@@ -114,7 +118,7 @@ import kotlin.collections.ArrayList
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
             iMvpView?.hideBackView()
-            iMvpView?.setImageUri(imageUri)
+            iMvpView?.setImageUri90(imageUri)
 
             Handler().postDelayed({
                 sendImageToApiAndGetObjects(imageBitmap)

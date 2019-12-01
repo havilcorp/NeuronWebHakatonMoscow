@@ -15,6 +15,7 @@ class MainContract {
         fun initializeView()
 
         fun setImage(bitmap: Bitmap)
+        fun setImageUri90(uri: Uri)
         fun setImageUri(uri: Uri)
         fun setPicassoImage(uri: Uri)
         fun drawRects(image: Bitmap, objects: ArrayList<ModelRect>, strokeWidth: Float, textSize: Float, textMargin: Float, rectRadius: Float)
@@ -24,8 +25,8 @@ class MainContract {
         fun hidePanel()
         fun showPanel()
 
-        fun hideSurfaceCamera()
-        fun showSurfaceCamera()
+        fun showActionPhoto()
+        fun hideActionPhoto()
 
         fun showSurfaceView()
         fun hideSurfaceView()
@@ -51,7 +52,8 @@ class MainContract {
         fun actionGalery()
         fun actionPhoto()
         fun actionSurfacePhoto()
-        fun loadedPhoto(uri: Uri, contentResolver: ContentResolver)
+        //fun loadedPhoto(uri: Uri, contentResolver: ContentResolver)
+        fun setBitmap(bitmap: Bitmap)
         fun actionCreatePhoto(context: Context)
 
         fun actionPointImage(x: Float, y: Float)

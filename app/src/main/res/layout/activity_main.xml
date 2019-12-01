@@ -18,13 +18,22 @@
         android:visibility="gone"
         android:text="Назад"/>
 
-    <SurfaceView
-        android:id="@+id/surfaceView"
+    <com.google.android.cameraview.CameraView
+        android:id="@+id/cameraView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:keepScreenOn="true"
+        android:adjustViewBounds="true"
+        app:autoFocus="true"
+        app:cameraAspectRatio="4:3"
+        app:facing="back"
+        app:flash="off"
+        app:maximumWidth="4000"
+        app:maximumPreviewWidth="1280"
+        app:useHighResPicture="false"
+        app:enableZoom="true"/>
 
-    <VideoView
+    <View
         android:id="@+id/backView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
