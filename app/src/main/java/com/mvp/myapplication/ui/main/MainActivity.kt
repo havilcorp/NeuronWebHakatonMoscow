@@ -143,6 +143,14 @@ class MainActivity : BaseActivity(), MainContract.IView {
         findViewById<View>(R.id.actionBack).visibility = View.GONE
     }
 
+    override fun showBackView() {
+        findViewById<View>(R.id.backView).visibility = View.VISIBLE
+    }
+
+    override fun hideBackView() {
+        findViewById<View>(R.id.backView).visibility = View.GONE
+    }
+
     override fun takePhoto() {
         /*camera.autoFocus { success, camera ->
             if(success) {

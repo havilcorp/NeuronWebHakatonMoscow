@@ -24,6 +24,12 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"/>
 
+    <VideoView
+        android:id="@+id/backView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#B3000000"/>
+
     <ImageView
         android:id="@+id/actionSurfacePhoto"
         android:layout_width="70dp"

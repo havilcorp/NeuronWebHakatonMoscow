@@ -33,6 +33,9 @@ class MainContract {
         fun showActionBack()
         fun hideActionBack()
 
+        fun showBackView()
+        fun hideBackView()
+
         fun takePhoto()
 
     }

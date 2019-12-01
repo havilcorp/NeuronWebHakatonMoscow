@@ -113,6 +113,7 @@ import kotlin.collections.ArrayList
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
+            iMvpView?.hideBackView()
             iMvpView?.setImageUri(imageUri)
 
             Handler().postDelayed({
@@ -127,6 +128,7 @@ import kotlin.collections.ArrayList
 
             iMvpView?.hidePanel()
             iMvpView?.hideSurfaceView()
+            iMvpView?.hideBackView()
             iMvpView?.setImage(imageBitmap)
 
             Handler().postDelayed({
@@ -140,6 +142,7 @@ import kotlin.collections.ArrayList
         iMvpView?.hideActionBack()
         iMvpView?.showPanel()
         iMvpView?.showSurfaceView()
+        iMvpView?.showBackView()
     }
 
     override fun setScreenSize(x: Int, y: Int) {
