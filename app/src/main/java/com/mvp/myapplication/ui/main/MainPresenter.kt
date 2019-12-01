@@ -201,8 +201,8 @@ import kotlin.collections.ArrayList
         selectImage?.let { selectImage ->
 
             val items = ArrayList<ModelItemString>()
-            val newX = x / koeffX
-            val newY = y / koeffY
+            val newX = x// / koeffX
+            val newY = y// / koeffY
 
             //Log.d("TAG", "screenSizeY ${screenSizeY} heightImage ${heightImage}")
             //Log.d("TAG", "koeffY ${koeffY}")

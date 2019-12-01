@@ -22,14 +22,13 @@ import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainContract.IView {
 
-    var camera = android.hardware.Camera.open()
-
     override fun inject() {
         App[this].component.inject(this)
     }
 
     @Inject
     lateinit var presenter: MainPresenter
+    val size = Point()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +42,7 @@ class MainActivity : BaseActivity(), MainContract.IView {
 
     override fun initializeView() {
 
-        val size = Point()
+
         windowManager.defaultDisplay.getSize(size)
         presenter.setScreenSize(size.x, size.y)
 
@@ -169,8 +168,8 @@ class MainActivity : BaseActivity(), MainContract.IView {
 
     override fun drawRects(image: Bitmap, objects: ArrayList<ModelRect>, strokeWidth: Float, textSize: Float, textMargin: Float, rectRadius: Float) {
         val bitmap = Bitmap.createBitmap(
-            image.width,
-            image.height,
+            size.x,
+            size.x / image.width * image.height,
             Bitmap.Config.ARGB_8888
         )
         val canvas = Canvas(bitmap)
@@ -184,7 +183,10 @@ class MainActivity : BaseActivity(), MainContract.IView {
         paintText.textSize = textSize
 
         canvas.drawColor(Color.LTGRAY)
-        canvas.drawBitmap(image, 0f, 0f, null)
+        //image.width = bitmap.width + 1
+        //image.height = bitmap.height
+        canvas.drawBitmap(image, Rect(0, 0, image.width-1, image.height-1), Rect(0, 0, size.x-1, size.y-1),null)
+        //canvas.drawBitmap(image, 0f, 0f, null)
         objects.forEach {
             paint.color = it.color
             paintText.color = it.color
