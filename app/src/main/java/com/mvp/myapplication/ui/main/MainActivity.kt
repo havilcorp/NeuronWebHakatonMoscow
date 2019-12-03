@@ -1,6 +1,5 @@
 package com.mvp.myapplication.ui.main
 
-import android.R.attr
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.*
@@ -41,7 +40,6 @@ class MainActivity : BaseActivity(), MainContract.IView {
     }
 
     override fun initializeView() {
-
 
         windowManager.defaultDisplay.getSize(size)
         presenter.setScreenSize(size.x, size.y)

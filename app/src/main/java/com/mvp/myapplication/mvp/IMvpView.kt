@@ -14,6 +14,8 @@ interface IMvpView {
     fun toast(data: Any)
     fun startActivity(clazz: Class<*>, isFinish: Boolean, intent: Intent = Intent())
     fun startActivityFResult(intent: Intent, code: Int)
+    fun startActivityFResult(clazz: Class<*>, code: Int)
+    fun onActivityResultOk(intent: Intent)
     fun backView()
     fun setBackView()
 

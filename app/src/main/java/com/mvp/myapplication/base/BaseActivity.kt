@@ -1,5 +1,6 @@
 package com.mvp.myapplication.base
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -31,6 +32,17 @@ abstract class BaseActivity: AppCompatActivity(), IMvpView {
 
     override fun startActivityFResult(intent: Intent, code: Int) {
         startActivityForResult(intent, code)
+    }
+
+    override fun startActivityFResult(clazz: Class<*>, code: Int) {
+        val intent = Intent()
+        intent.setClass(this, clazz)
+        startActivityForResult(intent, code)
+    }
+
+    override fun onActivityResultOk(intent: Intent) {
+        setResult(Activity.RESULT_OK, intent)
+        //onActivityResult(requestCode, resultCode, intent)
     }
 
     override fun backView() {

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.cameraview.CameraView
+        android:id="@+id/camera_cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true"
+        android:adjustViewBounds="true"
+        app:autoFocus="true"
+        app:cameraAspectRatio="16:9"
+        app:facing="back"
+        app:flash="off"
+        app:maximumWidth="4000"
+        app:maximumPreviewWidth="1280"
+        app:useHighResPicture="true"
+        app:enableZoom="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/camera_actionBack"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back_white"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/shape_background_camera"
+            android:padding="17dp"/>
+
+        <ImageView
+            android:id="@+id/camera_actionPhoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:padding="17dp"
+            android:background="@drawable/shape_background_surface_camera"/>
+
+        <ImageView
+            android:id="@+id/camera_actionGalery"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_cam1"
+            android:padding="17dp"
+            android:background="@drawable/shape_background_camera"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/camera_ImageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#333"
+        android:visibility="gone"/>
+
+    <include android:id="@+id/progress" layout="@layout/progress_bar"/>
+
+</RelativeLayout>

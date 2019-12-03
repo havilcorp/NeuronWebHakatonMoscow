@@ -18,7 +18,7 @@ class ImageUtils() {
             return encoded
         }
 
-        fun getResizedBitmap(bm: Bitmap, newWidth: Int, newHeight: Int): Bitmap? {
+        fun getResizedBitmap(bm: Bitmap, newWidth: Int, newHeight: Int): Bitmap {
             Log.d("TAG", "newWidth $newWidth newHeight $newHeight")
             val width = bm.width
             val height = bm.height

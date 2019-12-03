@@ -937,6 +937,7 @@ class AttrList() {
         attrList.add(ModelAttr("track", "дорожка"))
         attrList.add(ModelAttr("training", "обучение"))
         attrList.add(ModelAttr("trapeze", "трапеция"))
+        attrList.add(ModelAttr("t-shirt", "футболка"))
 
     }
 

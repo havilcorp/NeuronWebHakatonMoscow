@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:visibility="gone"
-    tools:visibility="visible"
+    tools:visibility="gone"
     android:background="#a3000000">
 
     <ProgressBar

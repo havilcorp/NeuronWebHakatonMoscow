@@ -3,7 +3,7 @@ package com.mvp.myapplication.ui.logo
 import android.os.Handler
 import com.mvp.myapplication.base.BasePresenter
 import com.mvp.myapplication.data.DataManager
-import com.mvp.myapplication.ui.main.MainActivity
+import com.mvp.myapplication.ui.web.WebActivity
 import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -24,7 +24,7 @@ import javax.inject.Singleton
     }
 
     override fun successCamPermission() {
-        iMvpView?.startActivity(MainActivity::class.java, true)
+        iMvpView?.startActivity(WebActivity::class.java, true)
     }
 
 }

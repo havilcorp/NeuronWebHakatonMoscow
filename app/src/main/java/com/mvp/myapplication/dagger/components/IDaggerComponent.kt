@@ -7,6 +7,7 @@ import com.mvp.myapplication.dagger.moduls.FirebaseModule
 import com.mvp.myapplication.data.DataManager
 import com.mvp.myapplication.data.local.DataBaseLocalHelper
 import com.mvp.myapplication.data.network.DataBaseNetworkHelper
+import com.mvp.myapplication.ui.camera.CameraActivity
 import com.mvp.myapplication.ui.logo.LogoActivity
 import com.mvp.myapplication.ui.main.MainActivity
 import com.mvp.myapplication.ui.web.WebActivity
@@ -21,6 +22,7 @@ interface IDaggerComponent {
     fun inject(activity: WebActivity)
     fun inject(activity: LogoActivity)
     fun inject(activity: MainActivity)
+    fun inject(activity: CameraActivity)
 
     var dataManager : DataManager
     var dataBaseNetworkHelper : DataBaseNetworkHelper

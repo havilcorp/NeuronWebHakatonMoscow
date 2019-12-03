@@ -26,10 +26,10 @@ class App: MultiDexApplication() {
         super.onCreate()
 
         component = DaggerIDaggerComponent.builder()
-                .contextModule(ContextModule(this))
-                .firebaseModule(FirebaseModule())
-                .apiModule(ApiModule())
-                .build()
+            .contextModule(ContextModule(this))
+            .firebaseModule(FirebaseModule())
+            .apiModule(ApiModule())
+            .build()
 
         component.inject(this)
 
